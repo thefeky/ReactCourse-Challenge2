@@ -13,31 +13,44 @@ export default function App() {
 function Counter() {
   const [step, setStep] = useState(1);
   const [count, setCount] = useState(0);
-  const date = new Date(2027, 5, 21);
+  const date = new Date();
+  date.setDate(date.getDate() + count);
 
-  function addStep() {
-    setStep((s) => s + 1);
-  }
-  function removeStep() {
-    if (step > 1) setStep((s) => s - 1);
-  }
+  // function addStep() {
+  //   setStep((s) => s + 1);
+  // }
+  // function removeStep() {
+  //   if (step > 1) setStep((s) => s - 1);
+  // }
   function addCount() {
     setCount((c) => c + step);
   }
   function removeCount() {
     setCount((c) => c - step);
   }
-
+  function reset() {
+    setStep(1);
+    setCount(0);
+  }
   return (
     <>
       <div>
-        <button onClick={removeStep}>-</button>
-        <span>Step: {step}</span>
-        <button onClick={addStep}>+</button>
+        <input
+          type="range"
+          value={step}
+          min={0}
+          max={10}
+          onChange={(e) => setStep(Number(e.target.value))}
+        ></input>
+        <span>{step}</span>
       </div>
       <div>
         <button onClick={removeCount}>-</button>
-        <span>Count: {count}</span>
+        <input
+          type="number"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        ></input>
         <button onClick={addCount}>+</button>
       </div>
       <span>
@@ -48,6 +61,11 @@ function Counter() {
           : `${Math.abs(count)} days ago was `}
       </span>
       <span>{date.toDateString()}</span>
+      {step !== 1 || count !== 0 ? (
+        <div>
+          <button onClick={reset}>RESET</button>
+        </div>
+      ) : null}
     </>
   );
 }
